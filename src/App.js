@@ -13,7 +13,7 @@ const options = [
 
 function App() {
   const [billAmount, setBillAmount] = useState(0);
-  const [tip, setTip] = useState({
+  const [tipPercentage, setTip] = useState({
     me: 0,
     friend: 0,
   });
@@ -27,11 +27,11 @@ function App() {
   };
 
   const handleMyTipAmount = (amount) => {
-    setTip({ ...tip, me: amount });
+    setTip({ ...tipPercentage, me: amount });
   };
 
   const handleOtherTipAmount = (amount) => {
-    setTip({ ...tip, friend: amount });
+    setTip({ ...tipPercentage, friend: amount });
   };
 
   const handleReset = () => {
@@ -42,14 +42,27 @@ function App() {
   return (
     <div>
       <Bill bill={billAmount} handleBillAmount={handleBillAmount} />
-      <Tip array={options} value={tip.me} onTip={handleMyTipAmount}>
+      <Tip array={options} value={tipPercentage.me} onTip={handleMyTipAmount}>
         How did you like the service?
       </Tip>
-      <Tip array={options} value={tip.friend} onTip={handleOtherTipAmount}>
+      <Tip
+        array={options}
+        value={tipPercentage.friend}
+        onTip={handleOtherTipAmount}
+      >
         How did your friend like the service
       </Tip>
-      <Total bill={billAmount} myTip={tip.me} friendTip={tip.friend} />
-      <Reset onReset={handleReset}/>
+
+      {billAmount > 0 && (
+        <>
+          <Total
+            bill={billAmount}
+            myTip={tipPercentage.me}
+            friendTip={tipPercentage.friend}
+          />
+          <Reset onReset={handleReset} />
+        </>
+      )}
     </div>
   );
 }
